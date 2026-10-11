@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pezzzeta · Test de Fragancias</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #9ea954;
+    --verde-claro: #c8ce87;
+    --morado: #9269ad;
+    --morado-claro: #c4a8d8;
+    --kraft: #c8a97a;
+    --kraft-claro: #e8d9c0;
+    --kraft-palido: #f5ede0;
+    --marron: #5a3e2b;
+    --blanco: #fdfaf6;
+    --sombra: rgba(90,62,43,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--kraft-palido);
+    background-image:
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8a97a' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    min-height: 100vh;
+    color: var(--marron);
+  }
+
+  /* SELECTOR DE IDIOMA */
+  #lang-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .logo-wrap {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--kraft);
+    box-shadow: 0 4px 20px var(--sombra);
+    margin-bottom: 1.8rem;
+    background: white;
+  }
+
+  .logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+  .logo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--verde-claro), var(--morado-claro));
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: white;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    color: var(--marron);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .tagline {
+    font-size: 1rem;
+    color: var(--morado);
+    font-style: italic;
+    margin-bottom: 2.5rem;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .lang-title {
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    color: var(--kraft);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .lang-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .lang-btn {
+    padding: 0.75rem 2rem;
+    border: 2px solid var(--verde);
+    background: transparent;
+    color: var(--marron);
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .lang-btn:hover, .lang-btn:focus {
+    background: var(--verde);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(158,169,84,0.35);
+    outline: none;
+  }
+
+  /* PANTALLA PRINCIPAL */
+  #main-screen { display: none; }
+
+  .header {
+    background: linear-gradient(135deg, var(--verde) 0%, var(--morado) 100%);
+    padding: 2rem 1.5rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0; right: 0;
+    height: 40px;
+    background: var(--kraft-palido);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+
+  .header-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.6);
+    overflow: hidden;
+    margin: 0 auto 1rem;
+    background: white;
+  }
+
+  .header-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .header h1 {
+    color: white;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .header .tagline { color: rgba(255,255,255,0.85); margin-bottom: 0; }
+
+  /* BARRA DE PROGRESO */
+  .progress-wrap {
+    max-width: 600px;
+    margin: 2rem auto 0;
+    padding: 0 1.5rem;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--kraft);
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+
+  .progress-bar {
+    height: 8px;
+    background: var(--kraft-claro);
+    border-radius: 50px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--verde), var(--morado));
+    border-radius: 50px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* TARJETA DE PREGUNTA */
+  .question-card {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1.2rem;
+  }
+
+  .card {
+    background: var(--blanco);
+    border-radius: 20px;
+    padding: 2rem 1.8rem;
+    box-shadow: 0 6px 30px var(--sombra);
+    border: 1.5px solid var(--kraft-claro);
+    position: relative;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--verde), var(--morado));
+    border-radius: 20px 20px 0 0;
+  }
+
+  .question-num {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--morado-claro);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+  }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 3vw, 1.35rem);
+    color: var(--marron);
+    line-height: 1.5;
+    margin-bottom: 1.8rem;
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .option-btn {
+    width: 100%;
+    text-align: left;
+    padding: 1rem 1.2rem;
+    border: 2px solid var(--kraft-claro);
+    background: var(--kraft-palido);
+    border-radius: 14px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    color: var(--marron);
+    transition: all 0.2s ease;
+    line-height: 1.4;
+  }
+
+  .option-btn:hover, .option-btn:focus {
+    border-color: var(--verde);
+    background: rgba(158,169,84,0.1);
+    transform: translateX(4px);
+    outline: none;
+  }
+
+  .option-btn.selected {
+    border-color: var(--morado);
+    background: rgba(146,105,173,0.1);
+  }
+
+  .option-letter {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--verde-claro);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 22px;
+    margin-right: 0.6rem;
+    flex-shrink: 0;
+  }
+
+  .option-btn.selected .option-letter { background: var(--morado); }
+
+  /* NAVEGACIÓN */
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    gap: 1rem;
+  }
+
+  .btn-nav {
+    padding: 0.7rem 1.8rem;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+  }
+
+  .btn-prev {
+    background: transparent;
+    border-color: var(--kraft);
+    color: var(--kraft);
+  }
+
+  .btn-prev:hover { background: var(--kraft-claro); }
+
+  .btn-next {
+    background: linear-gradient(135deg, var(--verde), var(--morado));
+    color: white;
+    border: none;
+    box-shadow: 0 4px 14px rgba(146,105,173,0.35);
+  }
+
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(146,105,173,0.45); }
+  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* RESULTADOS */
+  #results-screen {
+    display: none;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1.2rem 4rem;
+  }
+
+  .results-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .results-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: var(--marron);
+    margin-bottom: 0.5rem;
+  }
+
+  .results-header p {
+    color: var(--morado);
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .result-card {
+    background: var(--blanco);
+    border-radius: 20px;
+    margin-bottom: 1.2rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px var(--sombra);
+    border: 1.5px solid var(--kraft-claro);
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .result-rank {
+    width: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .rank-1 { background: linear-gradient(180deg, var(--morado), #7a4f98); }
+  .rank-2 { background: linear-gradient(180deg, var(--verde), #7a8530); }
+  .rank-3 { background: linear-gradient(180deg, var(--kraft), #a0805a); }
+  .rank-4 { background: linear-gradient(180deg, #b5b5b5, #8a8a8a); }
+  .rank-5 { background: linear-gradient(180deg, #c8b89a, #a0907a); }
+
+  .result-img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  .result-img-placeholder {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, var(--verde-claro), var(--morado-claro));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  .result-info {
+    padding: 1.2rem 1.4rem;
+    flex: 1;
+  }
+
+  .result-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--marron);
+    margin-bottom: 0.2rem;
+  }
+
+  .result-notes {
+    font-size: 0.78rem;
+    color: var(--morado);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+
+  .result-desc {
+    font-size: 0.88rem;
+    color: #6b5040;
+    line-height: 1.5;
+  }
+
+  .result-score {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--verde);
+    margin-top: 0.4rem;
+  }
+
+  .btn-restart {
+    display: block;
+    margin: 2.5rem auto 0;
+    padding: 0.9rem 2.5rem;
+    background: linear-gradient(135deg, var(--verde), var(--morado));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(146,105,173,0.35);
+    transition: all 0.2s ease;
+  }
+
+  .btn-restart:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(146,105,173,0.45); }
+
+  .footer-brand {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 0.8rem;
+    color: var(--kraft);
+    font-style: italic;
+  }
+
+  /* DECORACIÓN ARTESANAL */
+  .deco-line {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1.5rem 0;
+    color: var(--kraft);
+    font-size: 0.9rem;
+  }
+
+  .deco-line::before, .deco-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--kraft-claro);
+  }
+
+  @media (max-width: 480px) {
+    .result-card { flex-wrap: wrap; }
+    .result-rank { width: 100%; height: 40px; }
+    .result-img, .result-img-placeholder { width: 100%; height: 120px; }
+    .nav-buttons { flex-direction: column-reverse; }
+    .btn-nav { width: 100%; text-align: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PANTALLA DE IDIOMA -->
+<div id="lang-screen">
+  <div class="logo-wrap">
+    <img src="Logo.jgeg" alt="Pezzzeta" style="width:100%;height:100%;object-fit:cover;">
+  </div>
+  <h1>Pezzzeta</h1>
+  <p class="tagline">Feito con mans e corazón</p>
+  <p class="lang-title">¿En que idioma queres facer o test?</p>
+  <div class="lang-buttons">
+    <button class="lang-btn" onclick="startTest('gl')">🌿 Galego</button>
+    <button class="lang-btn" onclick="startTest('es')">🌿 Castellano</button>
+    <button class="lang-btn" onclick="startTest('en')">🌿 English</button>
+  </div>
+</div>
+
+<!-- PANTALLA PRINCIPAL -->
+<div id="main-screen">
+  <div class="header">
+    <div class="header-logo">
+      <div class="logo-placeholder" style="font-size:1.2rem">P</div>
+    </div>
+    <h1 id="test-title">Test de Fragancias</h1>
+    <p class="tagline" id="test-subtitle">Descobre o teu aroma Pezzzeta</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span id="progress-text">Pregunta 1 de 8</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div class="question-card">
+    <div class="card">
+      <div class="question-num" id="q-num"></div>
+      <div class="question-text" id="q-text"></div>
+      <div class="options-list" id="options-list"></div>
+      <div class="nav-buttons">
+        <button class="btn-nav btn-prev" id="btn-prev" onclick="prevQuestion()">←</button>
+        <button class="btn-nav btn-next" id="btn-next" onclick="nextQuestion()" disabled>→</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTADOS -->
+<div id="results-screen">
+  <div class="results-header">
+    <div class="deco-line">✿</div>
+    <h2 id="results-title">Os teus aromas Pezzzeta</h2>
+    <p id="results-subtitle">Estas son as 5 fragancias que mellor che van</p>
+    <div class="deco-line">✿</div>
+  </div>
+  <div id="results-list"></div>
+  <button class="btn-restart" id="btn-restart" onclick="restartTest()">↺ Repetir o test</button>
+  <p class="footer-brand">Feito con mans e corazón · Pezzzeta</p>
+</div>
+
+<script>
+// ============================================================
+// DATOS DE FRAGANCIAS
+// ============================================================
+const fragancias = {
+  "doce_limon": {
+    img: "Limón.jpg",
+    nome: { gl: "Doce de Limón", es: "Dulce de Limón", en: "Lemon Sweet" },
+    notas: { gl: "Saída: cítrico, limón · Corpo: crema, lima, azucre moreno · Fondo: vainilla, leite merengado", es: "Salida: cítrico, limón · Cuerpo: crema, lima, azúcar moreno · Fondo: vainilla, leche merengada", en: "Top: citrus, lemon · Heart: cream, lime, brown sugar · Base: vanilla, meringue milk" },
+    desc: { gl: "Cítrico pero doce, fresco pero goloso. Ideal para todo tipo de estancias, coche e roupa.", es: "Cítrico pero dulce, fresco pero goloso. Ideal para todo tipo de estancias, coche y ropa.", en: "Citrusy but sweet, fresh but indulgent. Perfect for any room, car, or fabric." },
+    emoji: "🍋"
+  },
+  "laranxa_valencia": {
+    img: "Laranxa de Valeencia.jpg",
+    nome: { gl: "Laranxa de Valencia", es: "Naranja Valenciana", en: "Valencia Orange" },
+    notas: { gl: "Saída: pomelo, laranxa · Corpo: mango, azar, pexego · Fondo: doce, amadeirada", es: "Salida: pomelo, naranja · Cuerpo: mango, azahar, melocotón · Fondo: dulce, amaderada", en: "Top: grapefruit, orange · Heart: mango, blossom, peach · Base: sweet, woody" },
+    desc: { gl: "Cítrica, vibrante e chea de enerxía. Enche cociñas e salóns con creatividade e presenza.", es: "Cítrica, vibrante y llena de energía. Llena cocinas y salones con creatividad y presencia.", en: "Citrusy, vibrant, full of energy. Fills kitchens and living rooms with creativity and presence." },
+    emoji: "🍊"
+  },
+  "laranxa_canela": {
+    img: "Laranxa con canela.jpg",
+    nome: { gl: "Laranxa con Canela", es: "Naranja con Canela", en: "Orange & Cinnamon" },
+    notas: { gl: "Saída: laranxa, mandarina · Corpo: canela, xenxibre, cravo · Fondo: vainilla, especias", es: "Salida: naranja, mandarina · Cuerpo: canela, jengibre, clavo · Fondo: vainilla, especias", en: "Top: orange, mandarin · Heart: cinnamon, ginger, clove · Base: vanilla, spices" },
+    desc: { gl: "Especiada e apetecible, tan elegante coma vibrante, outonal e doce.", es: "Especiada y apetecible, tan elegante como vibrante, otoñal y dulce.", en: "Spiced and appetising, as elegant as it is vibrant, autumnal and sweet." },
+    emoji: "🍂"
+  },
+  "pexego": {
+    img: "Pexego.jpg",
+    nome: { gl: "Pexego", es: "Melocotón", en: "Peach" },
+    notas: { gl: "Saída: laranxa, améndoa, albaricoque · Corpo: pexego, menta, figo · Fondo: pexego, almíscar", es: "Salida: naranja, almendra, albaricoque · Cuerpo: melocotón, menta, higo · Fondo: melocotón, almizcle", en: "Top: orange, almond, apricot · Heart: peach, mint, fig · Base: peach, musk" },
+    desc: { gl: "Doce, xugosa e con presenza. A mistura perfecta entre froita e chuchería.", es: "Dulce, jugosa y con presencia. La mezcla perfecta entre fruta y chuche.", en: "Sweet, juicy and present. The perfect mix between fruit and candy." },
+    emoji: "🍑"
+  },
+  "melon": {
+    img: "Melón.jpg",
+    nome: { gl: "Melón", es: "Melón", en: "Melon" },
+    notas: { gl: "Saída: bergamota, kiwi · Corpo: melón, fresa, pera · Fondo: azucre de vainilla", es: "Salida: bergamota, kiwi · Cuerpo: melón, fresa, pera · Fondo: azúcar de vainilla", en: "Top: bergamot, kiwi · Heart: melon, strawberry, pear · Base: vanilla sugar" },
+    desc: { gl: "Doce e veraniega. Lembras aqueles chicles de melón?", es: "Dulce y veraniega. ¿Recuerdas aquellos chicles de melón?", en: "Sweet and summery. Remember those melon bubble gums?" },
+    emoji: "🍈"
+  },
+  "sandia": {
+    img: "Sandía.jpg",
+    nome: { gl: "Sandía", es: "Sandía", en: "Watermelon" },
+    notas: { gl: "Saída: melón, ameixa, mazá · Corpo: sandía, pepino, mariño · Fondo: almíscar, melón", es: "Salida: melón, ciruela, manzana · Cuerpo: sandía, pepino, marino · Fondo: almizcle, melón", en: "Top: melon, plum, apple · Heart: watermelon, cucumber, marine · Base: musk, melon" },
+    desc: { gl: "Doce e veraniega, a mistura perfecta entre froita e chuchería.", es: "Dulce y veraniega, la mezcla perfecta entre fruta y chuche.", en: "Sweet and summery, the perfect mix between fruit and candy." },
+    emoji: "🍉"
+  },
+  "mango": {
+    img: "Mango.jpg",
+    nome: { gl: "Mango", es: "Mango", en: "Mango" },
+    notas: { gl: "Saída: froital, mango · Corpo: floral, fresco · Fondo: doce", es: "Salida: frutal, mango · Cuerpo: floral, fresco · Fondo: dulce", en: "Top: fruity, mango · Heart: floral, fresh · Base: sweet" },
+    desc: { gl: "Doce e potente, coma un mango maduro recén cortado.", es: "Dulce y potente, como un mango maduro recién cortado.", en: "Sweet and bold, like a freshly cut ripe mango." },
+    emoji: "🥭"
+  },
+  "coco": {
+    img: "Coco.jpg",
+    nome: { gl: "Coco", es: "Coco", en: "Coconut" },
+    notas: { gl: "Saída: leite de coco · Corpo: doce, vainilla · Fondo: orquídea, almíscar branco", es: "Salida: leche de coco · Cuerpo: dulce, vainilla · Fondo: orquídea, almizcle blanco", en: "Top: coconut milk · Heart: sweet, vanilla · Base: orchid, white musk" },
+    desc: { gl: "Suave, doce e cremoso, coma pechar os ollos baixo un sol tropical.", es: "Suave, dulce y cremoso, como cerrar los ojos bajo un sol tropical.", en: "Soft, sweet and creamy, like closing your eyes under a tropical sun." },
+    emoji: "🥥"
+  },
+  "figo": {
+    img: "Figo.jpg",
+    nome: { gl: "Figo", es: "Higo", en: "Fig" },
+    notas: { gl: "Saída: néctar de figo, herbáceo · Corpo: verde, froital, tropical · Fondo: ámbar, terroso, afumado", es: "Salida: néctar de higo, herbáceo · Cuerpo: verde, frutal, tropical · Fondo: ámbar, terroso, ahumado", en: "Top: fig nectar, herbaceous · Heart: green, fruity, tropical · Base: amber, earthy, smoky" },
+    desc: { gl: "Fresca e lixeiramente doce, coma arrincar un figo maduro baixo un rocío de setembro.", es: "Fresca y ligeramente dulce, como arrancar un higo maduro bajo un rocío de septiembre.", en: "Fresh and lightly sweet, like picking a ripe fig in the September dew." },
+    emoji: "🫐"
+  },
+  "pera": {
+    img: "Pera.jpg",
+    nome: { gl: "Pera", es: "Pera", en: "Pear" },
+    notas: { gl: "Saída: fresco, froital · Corpo: rosado, verde, follas · Fondo: almíscar, aldehído", es: "Salida: fresco, frutal · Cuerpo: rosado, verde, hojas · Fondo: almizcle, aldehído", en: "Top: fresh, fruity · Heart: rosy, green, leaves · Base: musk, aldehyde" },
+    desc: { gl: "Doce pero fresca, vibrante e cun toque elegante.", es: "Dulce pero fresca, vibrante y con un toque elegante.", en: "Sweet but fresh, vibrant with an elegant touch." },
+    emoji: "🍐"
+  },
+  "maza_verde": {
+    img: "Mazá verde.jpg",
+    nome: { gl: "Mazá Verde", es: "Manzana Verde", en: "Green Apple" },
+    notas: { gl: "Saída: mazá verde · Corpo: melocotón, piña · Fondo: doces", es: "Salida: manzana verde · Cuerpo: melocotón, piña · Fondo: dulces", en: "Top: green apple · Heart: peach, pineapple · Base: sweets" },
+    desc: { gl: "Doce pero fresca, relaxante e ideal para todo tipo de espazos.", es: "Dulce pero fresca, relajante e ideal para todo tipo de espacios.", en: "Sweet but fresh, relaxing and ideal for any space." },
+    emoji: "🍏"
+  },
+  "froitos_vermellos": {
+    img: "Froitos vermellos.jpg",
+    nome: { gl: "Froitos Vermellos", es: "Frutos Rojos", en: "Red Berries" },
+    notas: { gl: "Saída: framboesa, granada, ameixa · Corpo: arándano, lilas, amorodo, cereixa, vainilla · Fondo: rosa, almíscar, mandarina", es: "Salida: frambuesa, granada, ciruela · Cuerpo: arándano, lilas, fresa, cereza, vainilla · Fondo: rosa, almizcle, mandarina", en: "Top: raspberry, pomegranate, plum · Heart: blueberry, lilac, strawberry, cherry, vanilla · Base: rose, musk, mandarin" },
+    desc: { gl: "Un carácter curioso: doce, fresca, vibrante, e cun toque elegante.", es: "Un carácter curioso: dulce, fresca, vibrante y con un toque elegante.", en: "A curious character: sweet, fresh, vibrant, with an elegant touch." },
+    emoji: "🍓"
+  },
+  "zume_ameixa": {
+    img: "Ameixa.jpg",
+    nome: { gl: "Zume de Ameixa", es: "Zumo de Ciruela", en: "Plum Juice" },
+    notas: { gl: "Saída: mazá, canela, ameixa · Corpo: uva, framboesa, rosa · Fondo: améndoa, caramelo, azucarado", es: "Salida: manzana, canela, ciruela · Cuerpo: uva, frambuesa, rosa · Fondo: almendra, caramelo, azucarado", en: "Top: apple, cinnamon, plum · Heart: grape, raspberry, rose · Base: almond, caramel, sugary" },
+    desc: { gl: "Doce, xugoso e apetecíbel; un aroma único.", es: "Dulce, jugoso y apetecible; un aroma único.", en: "Sweet, juicy and appetising; a unique scent." },
+    emoji: "🍇"
+  },
+  "biscoito_limon": {
+    img: "Biscoito de limón.jpg",
+    nome: { gl: "Biscoito de Limón", es: "Bizcocho de Limón", en: "Lemon Sponge Cake" },
+    notas: { gl: "Saída: cremoso, canela, azar · Corpo: limón, vainilla, castaña, fiollo · Fondo: doce", es: "Salida: cremoso, canela, azahar · Cuerpo: limón, vainilla, castaña, hinojo · Fondo: dulce", en: "Top: creamy, cinnamon, orange blossom · Heart: lemon, vanilla, chestnut, fennel · Base: sweet" },
+    desc: { gl: "Doce, pero tamén fresca e cítrica, coma un biscoito de iogur de limón.", es: "Dulce, pero también fresca y cítrica, como un bizcocho de yogur de limón.", en: "Sweet but also fresh and citrusy, like a lemon yogurt cake." },
+    emoji: "🍋"
+  },
+  "chocolate": {
+    img: "Chocolate doce.jpg",
+    nome: { gl: "Chocolate Doce", es: "Chocolate Dulce", en: "Sweet Chocolate" },
+    notas: { gl: "Saída: chocolate negro, doce de leite · Corpo: grans de cacao, mel · Fondo: vainilla", es: "Salida: chocolate negro, dulce de leche · Cuerpo: granos de cacao, miel · Fondo: vainilla", en: "Top: dark chocolate, dulce de leche · Heart: cacao beans, honey · Base: vanilla" },
+    desc: { gl: "Un chocolate lixeiramente empalagoso que, curiosamente, tamén ten un porte elegante.", es: "Un chocolate ligeramente empalagoso que, curiosamente, también tiene un porte elegante.", en: "A slightly indulgent chocolate that, curiously, also carries an elegant air." },
+    emoji: "🍫"
+  },
+  "doce_castana": {
+    img: "Castaña.jpg",
+    nome: { gl: "Doce de Castaña", es: "Dulce de Castaña", en: "Chestnut Sweet" },
+    notas: { gl: "Froitos secos, outono e lareira", es: "Frutos secos, otoño y chimenea", en: "Chestnuts, autumn and fireplace" },
+    desc: { gl: "Un postre de samaín para desfrutar cos avós na calor da lareira.", es: "Un postre de Halloween para disfrutar con los abuelos al calor del hogar.", en: "A Halloween treat to enjoy with grandparents by the warmth of the fireplace." },
+    emoji: "🌰"
+  },
+  "abelan": {
+    img: "Abelá.jpg",
+    nome: { gl: "Abelá", es: "Avellana", en: "Hazelnut" },
+    notas: { gl: "Saída: froitos secos, abelá · Corpo: abelá cremosa · Fondo: vainilla, almíscar doce", es: "Salida: frutos secos, avellana · Cuerpo: avellana cremosa · Fondo: vainilla, almizcle dulce", en: "Top: nuts, hazelnut · Heart: creamy hazelnut · Base: vanilla, sweet musk" },
+    desc: { gl: "Non penses nun kínder, senón nunha crema de abelás sen azúcares engadidos. Todo o porte dun froito seco co dulzor dos seus aceites.", es: "No pienses en un kínder, sino en una crema de avellanas sin azúcares añadidos. Todo el porte de un fruto seco con el dulzor de sus aceites.", en: "Think not of a chocolate egg, but of pure hazelnut cream with no added sugar. All the character of a nut with the sweetness of its oils." },
+    emoji: "🌰"
+  },
+  "vainilla_polinesia": {
+    img: "Vainilla.jpg",
+    nome: { gl: "Vainilla da Polinesia Francesa", es: "Vainilla de la Polinesia Francesa", en: "French Polynesian Vanilla" },
+    notas: { gl: "Saída: vainilla, coco · Corpo: galleta, leite, doce · Fondo: manteiga", es: "Salida: vainilla, coco · Cuerpo: galleta, leche, dulce · Fondo: mantequilla", en: "Top: vanilla, coconut · Heart: biscuit, milk, sweet · Base: butter" },
+    desc: { gl: "Unha vainilla potente, acaramelada e con toques de manteiga.", es: "Una vainilla potente, acaramelada y con toques de mantequilla.", en: "A bold, caramelised vanilla with buttery notes." },
+    emoji: "🌸"
+  },
+  "vainilla_asiatica": {
+    img: "Vainilla asiática.jpg",
+    nome: { gl: "Vainilla Asiática", es: "Vainilla Asiática", en: "Asian Vanilla" },
+    notas: { gl: "Saída: bergamota, cardamomo, solar · Corpo: heliotropo, xasmín, vainilla · Fondo: ámbar cinza, almíscar, framboesa, vainilla", es: "Salida: bergamota, cardamomo, solar · Cuerpo: heliotropo, jazmín, vainilla · Fondo: ámbar gris, almizcle, frambuesa, vainilla", en: "Top: bergamot, cardamom, solar · Heart: heliotrope, jasmine, vanilla · Base: grey amber, musk, raspberry, vanilla" },
+    desc: { gl: "Non é a típica vainilla: esta ten presenza, elegancia, e non é nada doce. Exclusiva para xente con olfato refinado.", es: "No es la típica vainilla: esta tiene presencia, elegancia, y no es nada dulce. Exclusiva para gente con olfato refinado.", en: "Not your typical vanilla: this one has presence, elegance, and is not sweet at all. For those with a refined nose." },
+    emoji: "✨"
+  },
+  "bourbon_pistacho": {
+    img: "Licor pistacho.jpg",
+    nome: { gl: "Bourbon Pistacho", es: "Bourbon Pistacho", en: "Bourbon Pistachio" },
+    notas: { gl: "Saída: bourbon, licor, améndoa · Corpo: xenxibre, anís, leite · Fondo: praliné, coco, vainilla", es: "Salida: bourbon, licor, almendra · Cuerpo: jengibre, anís, leche · Fondo: praliné, coco, vainilla", en: "Top: bourbon, liqueur, almond · Heart: ginger, anise, milk · Base: praline, coconut, vanilla" },
+    desc: { gl: "Un licor de froitos secos para mollar os beizos tras unha comida familiar.", es: "Un licor de frutos secos para mojar los labios tras una comida familiar.", en: "A nutty liqueur to savour after a family meal." },
+    emoji: "🥃"
+  },
+  "amorodos_nata": {
+    img: "Fresas con nata.jpg",
+    nome: { gl: "Amorodos con Nata", es: "Fresas con Nata", en: "Strawberries & Cream" },
+    notas: { gl: "Saída: doce de vainilla, batido de amorodo · Corpo: nata montada, framboesa, arándano · Fondo: crema de leite, almíscar", es: "Salida: dulce de vainilla, batido de fresa · Cuerpo: nata montada, frambuesa, arándano · Fondo: crema de leche, almizcle", en: "Top: vanilla sweet, strawberry shake · Heart: whipped cream, raspberry, blueberry · Base: cream, musk" },
+    desc: { gl: "Unha explosión doce e empalagosa, coma un chupa-chup deste mesmo sabor.", es: "Una explosión dulce y empalagosa, como un chupa-chup de este mismo sabor.", en: "A sweet, indulgent explosion, like a strawberry lollipop." },
+    emoji: "🍓"
+  },
+  "pumpkin_spice": {
+    img: "Pumpkin.jpg",
+    nome: { gl: "Pumpkin Spice", es: "Pumpkin Spice", en: "Pumpkin Spice" },
+    notas: { gl: "Saída: limón, mandarina, pementa rosa · Corpo: cabaza, canela, cravo, noz moscada · Fondo: vainilla, crema doce, chocolate, caramelo", es: "Salida: limón, mandarina, pimienta rosa · Cuerpo: calabaza, canela, clavo, nuez moscada · Fondo: vainilla, crema dulce, chocolate, caramelo", en: "Top: lemon, mandarin, pink pepper · Heart: pumpkin, cinnamon, clove, nutmeg · Base: vanilla, sweet cream, chocolate, caramel" },
+    desc: { gl: "Outono puro, unha mistura de especias ideal para beber quentiña.", es: "Otoño puro, una mezcla de especias ideal para beber calientita.", en: "Pure autumn, a spice blend perfect for sipping warm." },
+    emoji: "🎃"
+  },
+  "pudding_nadal": {
+    img: "Pudding navidad.jpg",
+    nome: { gl: "Pudding de Nadal", es: "Pudding de Navidad", en: "Christmas Pudding" },
+    notas: { gl: "Saída: laranxa exótica · Corpo: canela, especiada · Fondo: doce, oriental, vainilla", es: "Salida: naranja exótica · Cuerpo: canela, especiada · Fondo: dulce, oriental, vainilla", en: "Top: exotic orange · Heart: cinnamon, spiced · Base: sweet, oriental, vanilla" },
+    desc: { gl: "Unha mistura de especias que chea de luz e dulzor a mesa en nadal.", es: "Una mezcla de especias que llena de luz y dulzor la mesa en Navidad.", en: "A blend of spices that fills the Christmas table with warmth and sweetness." },
+    emoji: "🎄"
+  },
+  "mazapan": {
+    img: "AMazapan.jpg",
+    nome: { gl: "Mazapán", es: "Mazapán", en: "Marzipan" },
+    notas: { gl: "Saída: noz moscada, cúrcuma, azucre · Corpo: flor de amendoeira, cravo, semente de anís · Fondo: leite batido, crema de vainilla, ámbar", es: "Salida: nuez moscada, cúrcuma, azúcar · Cuerpo: flor de almendro, clavo, semilla de anís · Fondo: leche batida, crema de vainilla, ámbar", en: "Top: nutmeg, turmeric, sugar · Heart: almond blossom, clove, anise seed · Base: whipped milk, vanilla cream, amber" },
+    desc: { gl: "Non precisa máis explicación: un mazapán ben doce nun inverno para recordar.", es: "No necesita más explicación: un mazapán bien dulce en un invierno para recordar.", en: "No explanation needed: a sweet marzipan for a winter to remember." },
+    emoji: "🍬"
+  },
+  "galleta_xenxibre": {
+    img: "Gallega jengibre.jpg",
+    nome: { gl: "Galleta de Xenxibre", es: "Galleta de Jengibre", en: "Gingerbread Cookie" },
+    notas: { gl: "Saída: laranxa, canela, xenxibre · Corpo: cravo, xenxibre, pomelo · Fondo: almíscar branco, canela, tonka", es: "Salida: naranja, canela, jengibre · Cuerpo: clavo, jengibre, pomelo · Fondo: almizcle blanco, canela, tonka", en: "Top: orange, cinnamon, ginger · Heart: clove, ginger, grapefruit · Base: white musk, cinnamon, tonka" },
+    desc: { gl: "Un postre navideño e especiado saíndo ben quentiño do forno.", es: "Un postre navideño y especiado saliendo bien calentito del horno.", en: "A spiced Christmas treat fresh out of the oven." },
+    emoji: "🍪"
+  },
+  "croasan": {
+    img: "ACroasan.jpg",
+    nome: { gl: "Croasán", es: "Croasán", en: "Croissant" },
+    notas: { gl: "Saída: canela, café, noz moscada · Corpo: leite, cabaza, toffee · Fondo: cacao, xarope de ágave, vainilla", es: "Salida: canela, café, nuez moscada · Cuerpo: leche, calabaza, toffee · Fondo: cacao, sirope de ágave, vainilla", en: "Top: cinnamon, coffee, nutmeg · Heart: milk, pumpkin, toffee · Base: cacao, agave syrup, vanilla" },
+    desc: { gl: "Coma a calidez dunha pastelería francesa.", es: "Como la calidez de una pastelería francesa.", en: "Like the warmth of a French patisserie." },
+    emoji: "🥐"
+  },
+  "capuccino": {
+    img: "Capuccino.jpg",
+    nome: { gl: "Capuccino", es: "Capuccino", en: "Cappuccino" },
+    notas: { gl: "Saída: café cortado, vainilla · Corpo: crema de leite, cacao, nata, caramelo · Fondo: manteiga, coco", es: "Salida: café cortado, vainilla · Cuerpo: crema de leche, cacao, nata, caramelo · Fondo: mantequilla, coco", en: "Top: espresso, vanilla · Heart: cream, cacao, whipped cream, caramel · Base: butter, coconut" },
+    desc: { gl: "Quentiño, doce e reconfortante cando tes frío.", es: "Calientito, dulce y reconfortante cuando tienes frío.", en: "Warm, sweet and comforting on a cold day." },
+    emoji: "☕"
+  },
+  "tortitas_arandano": {
+    img: "Tortitas.jpg",
+    nome: { gl: "Tortitas de Arándano con Xarope de Ágave", es: "Tortitas de Arándano con Sirope de Ágave", en: "Blueberry Pancakes with Agave Syrup" },
+    notas: { gl: "Saída: arándano, cremosa, leite · Corpo: mazá, sirope de ágave · Fondo: caramelo, vainilla", es: "Salida: arándano, cremosa, leche · Cuerpo: manzana, sirope de ágave · Fondo: caramelo, vainilla", en: "Top: blueberry, creamy, milk · Heart: apple, agave syrup · Base: caramel, vanilla" },
+    desc: { gl: "Un postre ben doce para merendar un domingo na casa.", es: "Un postre bien dulce para merendar un domingo en casa.", en: "A sweet Sunday afternoon treat." },
+    emoji: "🫐"
+  },
+  "leite_condensado": {
+    img: "Leche.jpg",
+    nome: { gl: "Leite Condensado", es: "Leche Condensada", en: "Condensed Milk" },
+    notas: { gl: "Saída: pan, manteiga, vainilla · Corpo: pan, caramelo, leite · Fondo: manteiga, doce, tonka", es: "Salida: pan, mantequilla, vainilla · Cuerpo: pan, caramelo, leche · Fondo: mantequilla, dulce, tonka", en: "Top: bread, butter, vanilla · Heart: bread, caramel, milk · Base: butter, sweet, tonka" },
+    desc: { gl: "Cálida, doce e lixeiramente especiada para inundar de olor toda a estancia.", es: "Cálida, dulce y ligeramente especiada para inundar de olor toda la estancia.", en: "Warm, sweet and lightly spiced to fill the whole room with scent." },
+    emoji: "🥛"
+  },
+  "mel": {
+    img: "Miel.jpg",
+    nome: { gl: "Mel", es: "Miel", en: "Honey" },
+    notas: { gl: "Saída: anís, limón · Corpo: caramelo, mel · Fondo: almíscar, tonka", es: "Salida: anís, limón · Cuerpo: caramelo, miel · Fondo: almizcle, tonka", en: "Top: anise, lemon · Heart: caramel, honey · Base: musk, tonka" },
+    desc: { gl: "Doce e natural, coma un pole ben xugoso.", es: "Dulce y natural, como un polen bien jugoso.", en: "Sweet and natural, like fresh juicy pollen." },
+    emoji: "🍯"
+  },
+  "lavanda_macela": {
+    img: "Lavanda.jpg",
+    nome: { gl: "Lavanda e Macela", es: "Lavanda y Manzanilla", en: "Lavender & Chamomile" },
+    notas: { gl: "Saída: lavanda, limón, bergamota · Corpo: macela, tonka, lilas, piñeiro · Fondo: azucre, almíscar", es: "Salida: lavanda, limón, bergamota · Cuerpo: manzanilla, tonka, lilas, pino · Fondo: azúcar, almizcle", en: "Top: lavender, lemon, bergamot · Heart: chamomile, tonka, lilac, pine · Base: sugar, musk" },
+    desc: { gl: "Relaxante e lixeiramente doce, coma esa infusión que chega cando precisas calma.", es: "Relajante y ligeramente dulce, como esa infusión que llega cuando necesitas calma.", en: "Relaxing and lightly sweet, like the herbal tea that arrives when you need calm." },
+    emoji: "💜"
+  },
+  "amatista": {
+    img: "Amatista.jpg",
+    nome: { gl: "Amatista", es: "Amatista", en: "Amethyst" },
+    notas: { gl: "Saída: mora, amorodo · Corpo: lirio dos vals, rosa, ylang-ylang · Fondo: cedro, almíscar branco, caramelo", es: "Salida: mora, fresa · Cuerpo: lirio de los valles, rosa, ylang-ylang · Fondo: cedro, almizcle blanco, caramelo", en: "Top: blackberry, strawberry · Heart: lily of the valley, rose, ylang-ylang · Base: cedar, white musk, caramel" },
+    desc: { gl: "Unha froita doce, suave e cargada de flores, coma unha primaveira soleada.", es: "Una fruta dulce, suave y cargada de flores, como una primavera soleada.", en: "Sweet fruit, soft and flower-laden, like a sunny spring day." },
+    emoji: "💎"
+  },
+  "romeiro": {
+    img: "Romero.jpg",
+    nome: { gl: "Romeiro", es: "Romero", en: "Rosemary" },
+    notas: { gl: "Saída: lavanda, romeiro · Corpo: cravo, pino · Fondo: conífera, agreste", es: "Salida: lavanda, romero · Cuerpo: clavo, pino · Fondo: conífera, agreste", en: "Top: lavender, rosemary · Heart: clove, pine · Base: conifer, wild" },
+    desc: { gl: "Herbal e intensa, ideal para quentar o corpo cando non te sintes ben.", es: "Herbal e intensa, ideal para calentar el cuerpo cuando no te sientes bien.", en: "Herbal and intense, ideal for warming up when you are not feeling well." },
+    emoji: "🌿"
+  },
+  "oregano": {
+    img: "Oregano.jpg",
+    nome: { gl: "Orégano", es: "Orégano", en: "Oregano" },
+    notas: { gl: "Saída: follas, limón · Corpo: lavanda, orégano · Fondo: ambarada, cedro", es: "Salida: hojas, limón · Cuerpo: lavanda, orégano · Fondo: ambarada, cedro", en: "Top: leaves, lemon · Heart: lavender, oregano · Base: amber, cedar" },
+    desc: { gl: "Herbas deliciosas para infusionar ou botar na comida, un aroma único.", es: "Hierbas deliciosas para infusionar o echar en la comida, un aroma único.", en: "Delicious herbs for infusing or cooking with — a truly unique scent." },
+    emoji: "🌱"
+  },
+  "ylang_ylang": {
+    img: "Ylang.jpg",
+    nome: { gl: "Ylang Ylang", es: "Ylang Ylang", en: "Ylang Ylang" },
+    notas: { gl: "Saída: azar, pexego · Corpo: tiaré, monoi, ylang, coco, améndoa · Fondo: nardo, cedro, vainilla", es: "Salida: azahar, melocotón · Cuerpo: tiaré, monoi, ylang, coco, almendra · Fondo: nardo, cedro, vainilla", en: "Top: orange blossom, peach · Heart: tiaré, monoi, ylang, coconut, almond · Base: spikenard, cedar, vanilla" },
+    desc: { gl: "Tan suave e lixeira coma tropical e floral.", es: "Tan suave y ligera como tropical y floral.", en: "As soft and light as it is tropical and floral." },
+    emoji: "🌺"
+  },
+  "campaninas_azuis": {
+    img: "Campanillas.jpg",
+    nome: { gl: "Campaniñas Azuis", es: "Campanillas Azules", en: "Blue Bells" },
+    notas: { gl: "Saída: acuosa, verde · Corpo: xasmín, lirio dos vals, magnolia · Fondo: ámbar, almíscar", es: "Salida: acuosa, verde · Cuerpo: jazmín, lirio de los valles, magnolia · Fondo: ámbar, almizcle", en: "Top: watery, green · Heart: jasmine, lily of the valley, magnolia · Base: amber, musk" },
+    desc: { gl: "Coma un campo cheo de flores silvestres e abellas melíferas.", es: "Como un campo lleno de flores silvestres y abejas melíferas.", en: "Like a field of wildflowers and honeybees." },
+    emoji: "💙"
+  },
+  "peonia_rosa": {
+    img: "Peonía.jpg",
+    nome: { gl: "Peonía Rosa", es: "Peonía Rosa", en: "Pink Peony" },
+    notas: { gl: "Saída: rosa, mandarina, grosel, granada · Corpo: ylang, violeta, geranio, lirio · Fondo: patchouli, almíscar", es: "Salida: rosa, mandarina, grosella, granada · Cuerpo: ylang, violeta, geranio, lirio · Fondo: patchouli, almizcle", en: "Top: rose, mandarin, redcurrant, pomegranate · Heart: ylang, violet, geranium, lily · Base: patchouli, musk" },
+    desc: { gl: "Floral delicada e fresca, tan verde coma elegante.", es: "Floral delicada y fresca, tan verde como elegante.", en: "Delicate and fresh floral, as green as it is elegant." },
+    emoji: "🌸"
+  },
+  "orquidea_lirio": {
+    img: "Orquidea.jpg",
+    nome: { gl: "Orquídea Negra e Lirio Balcánico", es: "Orquídea Negra y Lirio Balcánico", en: "Black Orchid & Balkan Lily" },
+    notas: { gl: "Saída: bergamota, limón, especiado · Corpo: noz pecana, xasmín, lirio, floral · Fondo: orquídea, cedro, sándalo, doce de vainilla", es: "Salida: bergamota, limón, especiado · Cuerpo: nuez pecana, jazmín, lirio, floral · Fondo: orquídea, cedro, sándalo, dulce de vainilla", en: "Top: bergamot, lemon, spiced · Heart: pecan, jasmine, lily, floral · Base: orchid, cedar, sandalwood, vanilla sweet" },
+    desc: { gl: "Unha esencia floral moi elegante e fresca, para tódolos gustos.", es: "Una esencia floral muy elegante y fresca, para todos los gustos.", en: "A very elegant and fresh floral essence, for every taste." },
+    emoji: "🖤"
+  },
+  "ruibarbo": {
+    img: "Ruibarbo.jpg",
+    nome: { gl: "Ruibarbo", es: "Ruibarbo", en: "Rhubarb" },
+    notas: { gl: "Saída: ruibarbo, laranxa amarga, pementa rosa · Corpo: seda, fresia, magnolia · Fondo: sándalo, almíscar branco, framboesa", es: "Salida: ruibarbo, naranja amarga, pimienta rosa · Cuerpo: seda, fresia, magnolia · Fondo: sándalo, almizcle blanco, frambuesa", en: "Top: rhubarb, bitter orange, pink pepper · Heart: silk, freesia, magnolia · Base: sandalwood, white musk, raspberry" },
+    desc: { gl: "Das fragancias máis elegantes, ideais para recibir visita nun salón.", es: "De las fragancias más elegantes, ideales para recibir visitas en un salón.", en: "One of the most elegant fragrances, ideal for welcoming guests into your living room." },
+    emoji: "🌷"
+  },
+  "nenuco": {
+    img: "Nenuco.jpg",
+    nome: { gl: "Nenuco", es: "Nenuco", en: "Nenuco" },
+    notas: { gl: "Saída: bergamota, neroli, petitgrain · Corpo: xasmín, azar, romeiro · Fondo: almíscar, polvorosa", es: "Salida: bergamota, neroli, petitgrain · Cuerpo: jazmín, azahar, romero · Fondo: almizcle, polvera", en: "Top: bergamot, neroli, petitgrain · Heart: jasmine, orange blossom, rosemary · Base: musk, powder" },
+    desc: { gl: "Fresca, floral e potente, ideal se precisas un cheiro ben marcado.", es: "Fresca, floral y potente, ideal si necesitas un olor bien marcado.", en: "Fresh, floral and bold, ideal if you want a noticeable scent." },
+    emoji: "🍼"
+  },
+  "bambu_cereixeira": {
+    img: "Bambu.jpg",
+    nome: { gl: "Bambú e Flor de Cereixeira", es: "Bambú y Flor de Cerezo", en: "Bamboo & Cherry Blossom" },
+    notas: { gl: "Saída: limón, eucalipto, lavanda, menta · Corpo: té verde, litsea, mandarina, ozónico · Fondo: ámbar", es: "Salida: limón, eucalipto, lavanda, menta · Cuerpo: té verde, litsea, mandarina, ozónico · Fondo: ámbar", en: "Top: lemon, eucalyptus, lavender, mint · Heart: green tea, litsea, mandarin, ozonic · Base: amber" },
+    desc: { gl: "Unha fragancia fresca e para tódolos gustos.", es: "Una fragancia fresca y para todos los gustos.", en: "A fresh fragrance that suits everyone." },
+    emoji: "🌸"
+  },
+  "lena_cedro": {
+    img: "Cedro.jpg",
+    nome: { gl: "Leña de Cedro", es: "Leña de Cedro", en: "Cedar Wood" },
+    notas: { gl: "Saída: madeira de cedro, abeto · Corpo: musgo de carballo, laranxa · Fondo: benjuí, sándalo, patchouli", es: "Salida: madera de cedro, abeto · Cuerpo: musgo de roble, naranja · Fondo: benjuí, sándalo, patchouli", en: "Top: cedar wood, fir · Heart: oak moss, orange · Base: benzoin, sandalwood, patchouli" },
+    desc: { gl: "A verdadeira esencia amadeirada, coma unha lareira prendida.", es: "La verdadera esencia amaderada, como una chimenea encendida.", en: "The true woody essence, like a lit fireplace." },
+    emoji: "🪵"
+  },
+  "canela": {
+    img: "Canela.jpg",
+    nome: { gl: "Canela", es: "Canela", en: "Cinnamon" },
+    notas: { gl: "Saída: laranxa · Corpo: cravo, améndoa · Fondo: vainilla", es: "Salida: naranja · Cuerpo: clavo, almendra · Fondo: vainilla", en: "Top: orange · Heart: clove, almond · Base: vanilla" },
+    desc: { gl: "Especiada e lixeiramente doce, tan empalagosa coma elegante.", es: "Especiada y ligeramente dulce, tan empalagosa como elegante.", en: "Spiced and lightly sweet, as indulgent as it is elegant." },
+    emoji: "🫚"
+  },
+  "biblioteca": {
+    img: "Biblioteca.jpg",
+    nome: { gl: "Biblioteca Antiga", es: "Biblioteca Antigua", en: "Ancient Library" },
+    notas: { gl: "Saída: xenxibre, fresia · Corpo: xasmín, ámbar, incenso · Fondo: cedro, patchouli, almíscar", es: "Salida: jengibre, fresia · Cuerpo: jazmín, ámbar, incienso · Fondo: cedro, patchouli, almizcle", en: "Top: ginger, freesia · Heart: jasmine, amber, incense · Base: cedar, patchouli, musk" },
+    desc: { gl: "Unha fragancia elegante e única, cargada de especias, pergaminos e sabiduría.", es: "Una fragancia elegante y única, cargada de especias, pergaminos y sabiduría.", en: "An elegant and unique fragrance, laden with spices, parchment and wisdom." },
+    emoji: "📚"
+  },
+  "suavizante_azul": {
+    img: "Suavizante.jpg",
+    nome: { gl: "Suavizante Azul", es: "Suavizante Azul", en: "Blue Softener" },
+    notas: { gl: "Saída: aldehídica, cítrica, mariña · Corpo: mazá verde, rosa · Fondo: xasmín, almíscar, solar", es: "Salida: aldehídica, cítrica, marina · Cuerpo: manzana verde, rosa · Fondo: jazmín, almizcle, solar", en: "Top: aldehydic, citrus, marine · Heart: green apple, rose · Base: jasmine, musk, solar" },
+    desc: { gl: "Xabonosa e potente, ideal para quen desexa un cheiro a limpo.", es: "Jabonosa y potente, ideal para quien desea un olor a limpio.", en: "Soapy and bold, ideal for those who love that clean laundry scent." },
+    emoji: "🫧"
+  }
+};
+
+// ============================================================
+// PREGUNTAS (trilingüe)
+// ============================================================
+const preguntas = [
+  {
+    texto: {
+      gl: "Como son os teus días ideais?",
+      es: "¿Cómo son tus días ideales?",
+      en: "What do your ideal days look like?"
+    },
+    opcions: [
+      { letra: "A", texto: { gl: "Manta, sofá e bebida quentiña", es: "Manta, sofá y bebida calentita", en: "Blanket, sofa and a warm drink" },
+        puntos: { chocolate:3, pumpkin_spice:3, capuccino:3, doce_castana:2, croasan:2, leite_condensado:2, lavanda_macela:2, canela:2, lena_cedro:2, vainilla_polinesia:1, galleta_xenxibre:1, mazapan:1, pudding_nadal:1, mel:1, biblioteca:1 } },
+      { letra: "B", texto: { gl: "Cociñando algo rico", es: "Cocinando algo rico", en: "Cooking something delicious" },
+        puntos: { biscoito_limon:3, chocolate:3, doce_castana:3, abelan:3, vainilla_polinesia:3, bourbon_pistacho:3, amorodos_nata:3, pumpkin_spice:3, pudding_nadal:3, mazapan:3, galleta_xenxibre:3, croasan:3, capuccino:3, tortitas_arandano:3, leite_condensado:3, mel:3, canela:3, laranxa_canela:2, laranxa_valencia:2, doce_limon:2, figo:2, coco:2, pera:2, zume_ameixa:2, froitos_vermellos:2, maza_verde:2, romeiro:2, oregano:2, pexego:1, sandia:1, melon:1, mango:1 } },
+      { letra: "C", texto: { gl: "Dando un paseo tranquilo pola natureza", es: "Dando un paseo tranquilo por la naturaleza", en: "Going for a quiet walk in nature" },
+        puntos: { campaninas_azuis:3, peonia_rosa:3, orquidea_lirio:3, bambu_cereixeira:3, nenuco:3, lena_cedro:3, romeiro:2, laranxa_valencia:2, pexego:2, doce_limon:2, figo:2, pera:2, maza_verde:2, froitos_vermellos:2, zume_ameixa:1, mel:1 } },
+      { letra: "D", texto: { gl: "Amizades, merenda e risas", es: "Amigos, merienda y risas", en: "Friends, snacks and laughter" },
+        puntos: { amatista:3, biscoito_limon:3, chocolate:3, vainilla_polinesia:3, amorodos_nata:3, pumpkin_spice:3, croasan:3, capuccino:3, tortitas_arandano:3, sandia:2, melon:2, mango:2, froitos_vermellos:2, zume_ameixa:2, bourbon_pistacho:2, mel:2, lavanda_macela:1, ruibarbo:1, suavizante_azul:1 } }
+    ]
+  },
+  {
+    texto: {
+      gl: "Como queres que sexa o teu espazo propio?",
+      es: "¿Cómo quieres que sea tu espacio propio?",
+      en: "How do you want your personal space to feel?"
+    },
+    opcions: [
+      { letra: "A", texto: { gl: "Un lugar de calma e relax", es: "Un lugar de calma y relax", en: "A place of calm and relaxation" },
+        puntos: { suavizante_azul:3, laranxa_canela:3, amatista:3, lavanda_macela:3, romeiro:3, campaninas_azuis:3, ylang_ylang:3, peonia_rosa:3, orquidea_lirio:3, bambu_cereixeira:3, nenuco:3, ruibarbo:3, biblioteca:2, canela:2, coco:2, vainilla_polinesia:2, lena_cedro:1, laranxa_valencia:1, doce_limon:1, figo:1, pumpkin_spice:1, leite_condensado:1, mel:1 } },
+      { letra: "B", texto: { gl: "Un sitio cheo de vida e creatividade", es: "Un sitio lleno de vida y creatividad", en: "A place full of life and creativity" },
+        puntos: { laranxa_valencia:3, doce_limon:3, pexego:3, sandia:3, melon:3, mango:3, vainilla_polinesia:3, zume_ameixa:3, froitos_vermellos:3, biscoito_limon:3, chocolate:3, amorodos_nata:3, capuccino:3, tortitas_arandano:3, canela:3, laranxa_canela:2, coco:2, pera:2, figo:2, doce_castana:2, abelan:2, pudding_nadal:2, mazapan:2, galleta_xenxibre:2, croasan:2, leite_condensado:2, mel:2, bourbon_pistacho:1, pumpkin_spice:1, amatista:1, suavizante_azul:1 } },
+      { letra: "C", texto: { gl: "Un espazo coas portas abertas para toda a túa xente", es: "Un espacio con las puertas abiertas para toda tu gente", en: "A space open to everyone you love" },
+        puntos: { suavizante_azul:3, laranxa_canela:3, coco:3, figo:3, froitos_vermellos:3, maza_verde:3, biscoito_limon:3, vainilla_polinesia:3, capuccino:3, mel:3, lavanda_macela:3, amatista:3, ylang_ylang:3, ruibarbo:3, canela:2, doce_limon:2, laranxa_valencia:2, pexego:2, melon:2, sandia:2, pera:2, zume_ameixa:2, chocolate:2, vainilla_asiatica:2, croasan:2, tortitas_arandano:2, lena_cedro:1, bourbon_pistacho:1, amorodos_nata:1, pumpkin_spice:1, pudding_nadal:1, mazapan:1, galleta_xenxibre:1, campaninas_azuis:1, peonia_rosa:1, bambu_cereixeira:1 } },
+      { letra: "D", texto: { gl: "Un lugar de paso, limpo e agradable", es: "Un lugar de paso, limpio y agradable", en: "A clean, pleasant transient space" },
+        puntos: { suavizante_azul:3, nenuco:3, amatista:3, ylang_ylang:3, vainilla_asiatica:3, orquidea_lirio:2, peonia_rosa:2, bambu_cereixeira:2, maza_verde:2, coco:2, pera:2, figo:2, ruibarbo:1, campaninas_azuis:1, vainilla_polinesia:1 } }
+    ]
+  },
+  {
+    texto: {
+      gl: "Que plan collerías?",
+      es: "¿Qué plan elegirías?",
+      en: "Which plan would you pick?"
+    },
+    opcions: [
+      { letra: "A", texto: { gl: "Visitar un campo de flores estacionais", es: "Visitar un campo de flores de temporada", en: "Visit a field of seasonal flowers" },
+        puntos: { lavanda_macela:3, amatista:3, campaninas_azuis:3, peonia_rosa:3, orquidea_lirio:3, nenuco:3, bambu_cereixeira:3, froitos_vermellos:2, zume_ameixa:2, mel:2, romeiro:2, ylang_ylang:2, laranxa_valencia:1, pexego:1, pera:1, figo:1, vainilla_polinesia:1, amorodos_nata:1, oregano:1, ruibarbo:1, suavizante_azul:1 } },
+      { letra: "B", texto: { gl: "Merendar nunha cafetaría francesa", es: "Merendar en una cafetería francesa", en: "Afternoon tea at a French café" },
+        puntos: { laranxa_canela:3, chocolate:3, vainilla_polinesia:3, bourbon_pistacho:3, croasan:3, pumpkin_spice:3, capuccino:3, tortitas_arandano:3, leite_condensado:3, mel:3, abelan:2, doce_castana:2, biscoito_limon:2, amorodos_nata:2, pudding_nadal:2, mazapan:2, galleta_xenxibre:2, canela:2, pexego:1, pera:1, froitos_vermellos:1, lavanda_macela:1 } },
+      { letra: "C", texto: { gl: "Nadar na praia até caer a tarde", es: "Nadar en la playa hasta que caiga la tarde", en: "Swimming at the beach until sunset" },
+        puntos: { coco:3, mango:3, ylang_ylang:3, nenuco:2, doce_limon:1, laranxa_valencia:1, pexego:1, melon:1, sandia:1, maza_verde:1 } },
+      { letra: "D", texto: { gl: "Coñecer un novo museo", es: "Conocer un nuevo museo", en: "Exploring a new museum" },
+        puntos: { romeiro:3, lavanda_macela:3, ruibarbo:3, lena_cedro:3, biblioteca:3, laranxa_canela:2, vainilla_asiatica:2, bourbon_pistacho:2, capuccino:2, oregano:2, canela:2, figo:1, pera:1, chocolate:1, abelan:1, pumpkin_spice:1, croasan:1, mel:1, leite_condensado:1 } }
+    ]
+  },
+  {
+    texto: {
+      gl: "Que sensación buscas nunha vela, ambientador, waxmelt ou colonia?",
+      es: "¿Qué sensación buscas en una vela, ambientador, waxmelt o colonia?",
+      en: "What feeling do you look for in a candle, diffuser, waxmelt or perfume?"
+    },
+    opcions: [
+      { letra: "A", texto: { gl: "Unha aperta cálida", es: "Un abrazo cálido", en: "A warm hug" },
+        puntos: { laranxa_canela:3, coco:3, chocolate:3, doce_castana:3, abelan:3, vainilla_polinesia:3, pumpkin_spice:3, capuccino:3, croasan:3, tortitas_arandano:3, leite_condensado:3, mel:3, lavanda_macela:3, lena_cedro:3, froitos_vermellos:2, biscoito_limon:2, pudding_nadal:2, mazapan:2, galleta_xenxibre:2, canela:2, suavizante_azul:2, zume_ameixa:1, vainilla_asiatica:1, amorodos_nata:1, amatista:1, ylang_ylang:1, campaninas_azuis:1, romeiro:1, oregano:1, ruibarbo:1 } },
+      { letra: "B", texto: { gl: "Unha viaxe a lugares afastados", es: "Un viaje a lugares lejanos", en: "A journey to faraway places" },
+        puntos: { biblioteca:3, lena_cedro:3, vainilla_asiatica:3, bambu_cereixeira:3, coco:2, mango:2, ylang_ylang:2, canela:1, laranxa_canela:1, oregano:1 } },
+      { letra: "C", texto: { gl: "Un cheiro rico pero non pesado", es: "Un olor rico pero no pesado", en: "A lovely scent that is not too heavy" },
+        puntos: { doce_limon:3, laranxa_valencia:3, ruibarbo:3, coco:3, campaninas_azuis:3, ylang_ylang:3, amatista:3, lavanda_macela:3, nenuco:3, bambu_cereixeira:3, orquidea_lirio:3, maza_verde:2, figo:2, biscoito_limon:2, peonia_rosa:2, froitos_vermellos:1, vainilla_asiatica:1, mel:1 } },
+      { letra: "D", texto: { gl: "Un xute de enerxía", es: "Un chute de energía", en: "A burst of energy" },
+        puntos: { doce_limon:3, laranxa_valencia:3, pexego:3, laranxa_canela:3, melon:3, sandia:3, mango:3, coco:3, pera:3, zume_ameixa:3, capuccino:3, figo:2, maza_verde:2, biscoito_limon:2, vainilla_polinesia:2, amorodos_nata:2, chocolate:1, croasan:1 } }
+    ]
+  },
+  {
+    texto: {
+      gl: "Que textura asocias cunha sensación agradábel?",
+      es: "¿Qué textura asocias a una sensación agradable?",
+      en: "What texture do you associate with a pleasant feeling?"
+    },
+    opcions: [
+      { letra: "A", texto: { gl: "Seda elegante e fresca", es: "Seda elegante y fresca", en: "Elegant, cool silk" },
+        puntos: { figo:3, pera:3, maza_verde:3, vainilla_asiatica:3, amatista:3, ylang_ylang:3, campaninas_azuis:3, peonia_rosa:3, orquidea_lirio:3, ruibarbo:3, nenuco:3, bambu_cereixeira:3, laranxa_canela:2, mel:2, lavanda_macela:2, romeiro:2, lena_cedro:2, biblioteca:2, suavizante_azul:2, doce_limon:1, froitos_vermellos:1, abelan:1, chocolate:1 } },
+      { letra: "B", texto: { gl: "La suave e quentiña", es: "Lana suave y calentita", en: "Soft, warm wool" },
+        puntos: { laranxa_canela:3, biscoito_limon:3, chocolate:3, doce_castana:3, abelan:3, croasan:3, capuccino:3, tortitas_arandano:3, leite_condensado:3, mel:3, lavanda_macela:3, amatista:3, lena_cedro:3, canela:3, biblioteca:3, suavizante_azul:3, coco:2, vainilla_polinesia:2, pudding_nadal:2, mazapan:2, galleta_xenxibre:2, pumpkin_spice:2, pera:1, froitos_vermellos:1, bourbon_pistacho:1, campaninas_azuis:1, oregano:1 } },
+      { letra: "C", texto: { gl: "Madeira rugosa e natural", es: "Madera rugosa y natural", en: "Rough, natural wood" },
+        puntos: { lena_cedro:3, biblioteca:3, canela:3, laranxa_canela:2, doce_castana:2, vainilla_asiatica:2, romeiro:2, ruibarbo:2, bourbon_pistacho:1, oregano:1 } },
+      { letra: "D", texto: { gl: "Monda de froita húmida e brillante", es: "Cáscara de fruta húmeda y brillante", en: "Shiny, wet fruit peel" },
+        puntos: { doce_limon:3, laranxa_valencia:3, pexego:3, melon:3, sandia:3, coco:3, figo:3, pera:3, maza_verde:3, froitos_vermellos:3, zume_ameixa:3, laranxa_canela:2, mango:2, doce_castana:1, amorodos_nata:1, tortitas_arandano:1, campaninas_azuis:1, nenuco:1, bambu_cereixeira:1 } }
+    ]
+  },
+  {
+    texto: {
+      gl: "Cal é a túa estación favorita?",
+      es: "¿Cuál es tu estación favorita?",
+      en: "What is your favourite season?"
+    },
+    opcins: null,
+    opcions: [
+      { letra: "A", texto: { gl: "Primavera, con pétalos e rocío", es: "Primavera, con pétalos y rocío", en: "Spring, with petals and dew" },
+        puntos: { lavanda_macela:3, amatista:3, campaninas_azuis:3, peonia_rosa:3, orquidea_lirio:3, nenuco:3, bambu_cereixeira:3, romeiro:2, oregano:2, ylang_ylang:2, ruibarbo:2, figo:2, pera:2, maza_verde:2, suavizante_azul:2, pexego:1, doce_limon:1, laranxa_valencia:1, zume_ameixa:1, froitos_vermellos:1, biscoito_limon:1, amorodos_nata:1, vainilla_polinesia:1, mel:1 } },
+      { letra: "B", texto: { gl: "Verán cálido con salitre", es: "Verano cálido con salitre", en: "Warm summer with sea salt" },
+        puntos: { sandia:3, melon:3, mango:3, coco:3, ylang_ylang:3, doce_limon:2, laranxa_valencia:2, pexego:2, figo:1 } },
+      { letra: "C", texto: { gl: "Outono húmido e acolledor", es: "Otoño húmedo y acogedor", en: "Damp, cosy autumn" },
+        puntos: { laranxa_canela:3, doce_castana:3, pumpkin_spice:3, lena_cedro:3, biblioteca:3, figo:2, canela:2, bourbon_pistacho:1, croasan:1, capuccino:1 } },
+      { letra: "D", texto: { gl: "Inverno frío e festivo", es: "Invierno frío y festivo", en: "Cold, festive winter" },
+        puntos: { laranxa_canela:3, chocolate:3, pudding_nadal:3, mazapan:3, galleta_xenxibre:3, lena_cedro:3, bourbon_pistacho:2, croasan:2, capuccino:2, mel:2, leite_condensado:2, biblioteca:2, suavizante_azul:2, abelan:1, romeiro:1, ruibarbo:1 } }
+    ]
+  },
+  {
+    texto: {
+      gl: "Que palabras describen mellor os cheiros que buscas?",
+      es: "¿Qué palabras describen mejor los olores que buscas?",
+      en: "Which words best describe the scents you look for?"
+    },
+    opcions: [
+      { letra: "A", texto: { gl: "Dulzóns e empalagosos", es: "Dulzones y empalagosos", en: "Sweet and indulgent" },
+        puntos: { chocolate:3, doce_castana:3, abelan:3, vainilla_polinesia:3, amorodos_nata:3, pudding_nadal:3, mazapan:3, galleta_xenxibre:3, croasan:3, capuccino:3, tortitas_arandano:3, leite_condensado:3, mel:3, sandia:3, melon:3, pexego:3, mango:3, biscoito_limon:2, bourbon_pistacho:2, doce_limon:2, pera:2, canela:2, pumpkin_spice:1, laranxa_valencia:1, coco:1, maza_verde:1, zume_ameixa:1, campaninas_azuis:1 } },
+      { letra: "B", texto: { gl: "Frutais e ricos", es: "Frutales y ricos", en: "Fruity and luscious" },
+        puntos: { doce_limon:3, laranxa_valencia:3, laranxa_canela:3, pexego:3, melon:3, sandia:3, mango:3, coco:3, figo:3, pera:3, maza_verde:3, froitos_vermellos:3, zume_ameixa:3, biscoito_limon:2, tortitas_arandano:2, amorodos_nata:1 } },
+      { letra: "C", texto: { gl: "Florais e frescos", es: "Florales y frescos", en: "Floral and fresh" },
+        puntos: { lavanda_macela:3, amatista:3, ylang_ylang:3, campaninas_azuis:3, peonia_rosa:3, orquidea_lirio:3, nenuco:3, bambu_cereixeira:3, suavizante_azul:2, doce_limon:2, laranxa_valencia:2, romeiro:2, figo:2, maza_verde:2, ruibarbo:1, pera:1, froitos_vermellos:1, zume_ameixa:1, biscoito_limon:1 } },
+      { letra: "D", texto: { gl: "Curiosos e únicos", es: "Curiosos y únicos", en: "Curious and unique" },
+        puntos: { zume_ameixa:3, vainilla_asiatica:3, oregano:3, biblioteca:3, suavizante_azul:3, laranxa_canela:2, doce_castana:2, amatista:2, ruibarbo:2, abelan:1, bourbon_pistacho:1, mazapan:1, galleta_xenxibre:1, pudding_nadal:1, tortitas_arandano:1, leite_condensado:1 } }
+    ]
+  },
+  {
+    texto: {
+      gl: "Cal acostuma a ser o teu plan de domingo?",
+      es: "¿Cuál suele ser tu plan de domingo?",
+      en: "What is your usual Sunday plan?"
+    },
+    opcions: [
+      { letra: "A", texto: { gl: "Limpar e ordear, a casa precisa coidados", es: "Limpiar y ordenar, la casa necesita cuidados", en: "Cleaning and tidying — the house needs attention" },
+        puntos: { suavizante_azul:3, lavanda_macela:3, amatista:3, campaninas_azuis:3, peonia_rosa:3, orquidea_lirio:3, nenuco:3, bambu_cereixeira:3, ylang_ylang:2, romeiro:2, doce_limon:1, laranxa_valencia:1, figo:1, maza_verde:1 } },
+      { letra: "B", texto: { gl: "Visitar aos teus, as relacións son o máis importante", es: "Visitar a los tuyos, las relaciones son lo más importante", en: "Visiting loved ones — relationships are everything" },
+        puntos: { biscoito_limon:3, chocolate:3, doce_castana:3, abelan:3, vainilla_polinesia:3, pudding_nadal:3, mazapan:3, galleta_xenxibre:3, croasan:3, capuccino:3, tortitas_arandano:3, leite_condensado:3, mel:3, nenuco:3, lena_cedro:3, canela:3, doce_limon:2, laranxa_valencia:2, amorodos_nata:2, oregano:2, romeiro:2, suavizante_azul:2, pexego:1, pera:1, maza_verde:1, froitos_vermellos:1, bourbon_pistacho:1, lavanda_macela:1, amatista:1, biblioteca:1 } },
+      { letra: "C", texto: { gl: "Aventura por lugares novos", es: "Aventura por lugares nuevos", en: "An adventure in new places" },
+        puntos: { biblioteca:3, lena_cedro:3, mango:2, coco:2, vainilla_asiatica:2, romeiro:2, oregano:2, ylang_ylang:2, laranxa_canela:1 } },
+      { letra: "D", texto: { gl: "Descanso e reseteo para afrontar a nova semana", es: "Descanso y reseteo para afrontar la nueva semana", en: "Rest and reset before the new week" },
+        puntos: { suavizante_azul:3, lena_cedro:3, coco:3, vainilla_polinesia:3, capuccino:3, lavanda_macela:3, amatista:3, romeiro:3, nenuco:3, ruibarbo:3, laranxa_canela:2, pumpkin_spice:2, pudding_nadal:2, mazapan:2, galleta_xenxibre:2, leite_condensado:2, mel:2, peonia_rosa:2, bambu_cereixeira:2, biblioteca:1, canela:1, figo:1, maza_verde:1, froitos_vermellos:1, oregano:1 } }
+    ]
+  }
+];
+
+// ============================================================
+// LÓGICA DEL TEST
+// ============================================================
+let lingua = 'gl';
+let preguntaActual = 0;
+let respostas = {};
+let puntuacions = {};
+
+const textos = {
+  gl: {
+    testTitle: "Test de Fragancias",
+    testSubtitle: "Descobre o teu aroma Pezzzeta",
+    pregunta: "Pregunta",
+    de: "de",
+    anterior: "← Anterior",
+    seguinte: "Seguinte →",
+    ver: "Ver os meus resultados ✿",
+    resultsTitle: "Os teus aromas Pezzzeta",
+    resultsSubtitle: "Estas son as 5 fragancias que mellor che van",
+    puntos: "puntos",
+    repetir: "↺ Repetir o test",
+    notasLabel: "Notas:",
+    footer: "Feito con mans e corazón · Pezzzeta"
+  },
+  es: {
+    testTitle: "Test de Fragancias",
+    testSubtitle: "Descubre tu aroma Pezzzeta",
+    pregunta: "Pregunta",
+    de: "de",
+    anterior: "← Anterior",
+    seguinte: "Siguiente →",
+    ver: "Ver mis resultados ✿",
+    resultsTitle: "Tus aromas Pezzzeta",
+    resultsSubtitle: "Estas son las 5 fragancias que mejor te van",
+    puntos: "puntos",
+    repetir: "↺ Repetir el test",
+    notasLabel: "Notas:",
+    footer: "Hecho con manos y corazón · Pezzzeta"
+  },
+  en: {
+    testTitle: "Fragrance Quiz",
+    testSubtitle: "Discover your Pezzzeta scent",
+    pregunta: "Question",
+    de: "of",
+    anterior: "← Back",
+    seguinte: "Next →",
+    ver: "See my results ✿",
+    resultsTitle: "Your Pezzzeta scents",
+    resultsSubtitle: "These are the 5 fragrances that suit you best",
+    puntos: "points",
+    repetir: "↺ Take the quiz again",
+    notasLabel: "Notes:",
+    footer: "Made with hands and heart · Pezzzeta"
+  }
+};
+
+function startTest(lang) {
+  lingua = lang;
+  document.getElementById('lang-screen').style.display = 'none';
+  document.getElementById('main-screen').style.display = 'block';
+  const t = textos[lang];
+  document.getElementById('test-title').textContent = t.testTitle;
+  document.getElementById('test-subtitle').textContent = t.testSubtitle;
+  document.getElementById('btn-prev').textContent = t.anterior;
+  preguntaActual = 0;
+  respostas = {};
+  puntuacins = {};
+  Object.keys(fragancias).forEach(k => puntuacins[k] = 0);
+  mostrarPregunta();
+}
+
+function mostrarPregunta() {
+  const t = textos[lingua];
+  const total = preguntas.length;
+  const idx = preguntaActual;
+  const p = preguntas[idx];
+  const pct = Math.round((idx / total) * 100);
+
+  document.getElementById('progress-text').textContent = `${t.pregunta} ${idx + 1} ${t.de} ${total}`;
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('q-num').textContent = `${t.pregunta} ${idx + 1} / ${total}`;
+  document.getElementById('q-text').textContent = p.texto[lingua];
+
+  const lista = document.getElementById('options-list');
+  lista.innerHTML = '';
+  p.opcions.forEach((op, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (respostas[idx] === i ? ' selected' : '');
+    btn.innerHTML = `<span class="option-letter">${op.letra}</span>${op.texto[lingua]}`;
+    btn.onclick = () => seleccionarOpcion(i);
+    lista.appendChild(btn);
+  });
+
+  document.getElementById('btn-prev').style.visibility = idx === 0 ? 'hidden' : 'visible';
+  const btnNext = document.getElementById('btn-next');
+  const esUltima = idx === total - 1;
+  btnNext.textContent = esUltima ? textos[lingua].ver : textos[lingua].seguinte;
+  btnNext.disabled = respostas[idx] === undefined;
+}
+
+function seleccionarOpcion(i) {
+  respostas[preguntaActual] = i;
+  document.querySelectorAll('.option-btn').forEach((b, idx) => {
+    b.classList.toggle('selected', idx === i);
+  });
+  document.getElementById('btn-next').disabled = false;
+}
+
+function prevQuestion() {
+  if (preguntaActual > 0) { preguntaActual--; mostrarPregunta(); }
+}
+
+function nextQuestion() {
+  const total = preguntas.length;
+  if (preguntaActual < total - 1) {
+    preguntaActual++;
+    mostrarPregunta();
+  } else {
+    calcularResultados();
+  }
+}
+
+function calcularResultados() {
+  const scores = {};
+  Object.keys(fragancias).forEach(k => scores[k] = 0);
+
+  preguntas.forEach((p, qi) => {
+    const sel = respostas[qi];
+    if (sel === undefined) return;
+    const op = p.opcions[sel];
+    Object.entries(op.puntos).forEach(([frag, pts]) => {
+      if (scores[frag] !== undefined) scores[frag] += pts;
+    });
+  });
+
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  mostrarResultados(sorted);
+}
+
+function mostrarResultados(top5) {
+  document.getElementById('main-screen').style.display = 'none';
+  const rs = document.getElementById('results-screen');
+  rs.style.display = 'block';
+  const t = textos[lingua];
+  document.getElementById('results-title').textContent = t.resultsTitle;
+  document.getElementById('results-subtitle').textContent = t.resultsSubtitle;
+  document.getElementById('btn-restart').textContent = t.repetir;
+  document.querySelector('.footer-brand').textContent = t.footer;
+
+  const lista = document.getElementById('results-list');
+  lista.innerHTML = '';
+  const rankLabels = ['1✦', '2', '3', '4', '5'];
+  const rankClasses = ['rank-1','rank-2','rank-3','rank-4','rank-5'];
+
+  top5.forEach(([key, score], i) => {
+    const f = fragancias[key];
+    if (!f) return;
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.innerHTML = `
+      <div class="result-rank ${rankClasses[i]}">${rankLabels[i]}</div>
+      <img class="result-img" src="${f.img}" alt="${f.nome[lingua]}" onerror="this.style.display='none'">
+      <div class="result-info">
+        <div class="result-name">${f.nome[lingua]}</div>
+        <div class="result-notes">${t.notasLabel} ${f.notas[lingua]}</div>
+        <div class="result-desc">${f.desc[lingua]}</div>
+        <div class="result-score">${score} ${t.puntos}</div>
+      </div>`;
+    lista.appendChild(card);
+  });
+
+  rs.scrollIntoView({ behavior: 'smooth' });
+}
+
+function restartTest() {
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('lang-screen').style.display = 'flex';
+  preguntaActual = 0;
+  respostas = {};
+}
+</script>
+</body>
+</html>
