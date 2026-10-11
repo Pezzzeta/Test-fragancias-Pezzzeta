@@ -1127,7 +1127,7 @@ function mostrarResultados(top5) {
     card.className = 'result-card';
     card.innerHTML = `
       <div class="result-rank ${rankClasses[i]}">${rankLabels[i]}</div>
-      <div class="result-img-placeholder">${f.emoji}</div>
+      <img class="result-img" scr="${f.img}" alt="$(f.nome[lingua]}" onoerror="this.style.display='none'"</div>
       <div class="result-info">
         <div class="result-name">${f.nome[lingua]}</div>
         <div class="result-notes">${t.notasLabel} ${f.notas[lingua]}</div>
